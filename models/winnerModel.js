@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const winnerSchema = new mongoose.Schema({
-  userId: mongoose.Schema.Types.ObjectId,
-  drawId: mongoose.Schema.Types.ObjectId,
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  drawId: { type: mongoose.Schema.Types.ObjectId, ref: "Draw" },
 
   match: Number,
   prize: Number,
