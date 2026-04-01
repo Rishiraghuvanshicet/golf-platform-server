@@ -2,11 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
-import {
-  createCorsConfig,
-  corsErrorHeaders,
-  getAllowedOrigins,
-} from "./config/cors.js";
+
 
 // Routes
 import authRoutes from "./routes/authRoutes.js";
@@ -33,7 +29,7 @@ app.use(
   }),
 );
 
-// ✅ Handle preflight
+
 app.options("*", cors());
 
 app.use(express.json());
@@ -52,20 +48,22 @@ app.get("/", (req, res) => {
   res.send("API Running ...");
 });
 
-app.use((err, req, res, next) => {
-  console.error(err);
-  const headers = corsErrorHeaders(req);
-  res.set(headers);
-  res.status(err.status || 500).json({ msg: err.message || "Server error" });
-});
+
+
+// app.use((req, res, next) => {
+//   res.status(404).json({ message: "Route not found" });
+// });
+
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).json({
+//     message: err.message || "Server Error"
+//   });
+// });
+
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server on port ${PORT}`);
-  console.log(
-    "CORS allowed origins:",
-    [...getAllowedOrigins()].join(", ") || "(none)",
-  );
-  if (!process.env.JWT_SECRET) console.warn("JWT_SECRET is not set");
-});
+app.listen(PORT, () =>
+  console.log(` Server running on port ${PORT}`)
+);
