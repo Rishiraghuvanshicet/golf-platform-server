@@ -22,7 +22,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin:"https://golf-platform-frontend-coral.vercel.app/g",
+    origin:"https://golf-platform-frontend-coral.vercel.app",
     credentials: true,
   })
 );
