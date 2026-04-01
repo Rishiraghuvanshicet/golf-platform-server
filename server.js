@@ -2,7 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
-import { createCorsConfig, corsErrorHeaders, getAllowedOrigins } from "./config/cors.js";
+import {
+  createCorsConfig,
+  corsErrorHeaders,
+  getAllowedOrigins,
+} from "./config/cors.js";
 
 // Routes
 import authRoutes from "./routes/authRoutes.js";
@@ -20,7 +24,18 @@ connectDB();
 
 const app = express();
 
-app.use(cors(createCorsConfig()));
+app.use(
+  cors({
+    origin: "https://golf-platform-frontend-coral.vercel.app",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
+// ✅ Handle preflight
+app.options("*", cors());
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
@@ -48,6 +63,9 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server on port ${PORT}`);
-  console.log("CORS allowed origins:", [...getAllowedOrigins()].join(", ") || "(none)");
+  console.log(
+    "CORS allowed origins:",
+    [...getAllowedOrigins()].join(", ") || "(none)",
+  );
   if (!process.env.JWT_SECRET) console.warn("JWT_SECRET is not set");
 });
