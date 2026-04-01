@@ -22,7 +22,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || true,
+    origin: process.env.CLIENT_ORIGIN || "golf-platform-frontend-production-64be.up.railway.app",
     credentials: true,
   })
 );
