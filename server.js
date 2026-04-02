@@ -18,15 +18,21 @@ connectDB();
 
 const app = express();
 
+app.use((req, res, next) => {
+  console.log("Origin:", req.headers.origin);
+  next();
+});
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://golf-platform-frontend-coral.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: [
+      "http://localhost:5173",
+      "https://golf-platform-frontend-coral.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     credentials: true,
-  }),
+  })
 );
-
-app.options("*", cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
