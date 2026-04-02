@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
+import { createCorsConfig, getAllowedOrigins } from "./config/cors.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import scoreRoutes from "./routes/scoreRoutes.js";
@@ -18,21 +19,7 @@ connectDB();
 
 const app = express();
 
-app.use((req, res, next) => {
-  console.log("Origin:", req.headers.origin);
-  next();
-});
-
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://golf-platform-frontend-coral.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    credentials: true,
-  })
-);
+app.use(cors(createCorsConfig()));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
@@ -51,6 +38,7 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server on port ${PORT}`);
+  console.log("CORS origins:", [...getAllowedOrigins()].join(", "));
 });
